@@ -1,0 +1,40 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    diff-lcs (1.4.4)
+    eventmachine (1.2.7)
+    faye-websocket (0.11.0)
+      eventmachine (>= 0.12.0)
+      websocket-driver (>= 0.5.1)
+    mock_redis (0.26.0)
+    redis (4.2.5)
+    rspec (3.10.0)
+      rspec-core (~> 3.10.0)
+      rspec-expectations (~> 3.10.0)
+      rspec-mocks (~> 3.10.0)
+    rspec-core (3.10.0)
+      rspec-support (~> 3.10.0)
+    rspec-expectations (3.10.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.10.0)
+    rspec-mocks (3.10.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.10.0)
+    rspec-support (3.10.0)
+    websocket-driver (0.7.3)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.5)
+
+PLATFORMS
+  ruby
+  x86_64-darwin-19
+
+DEPENDENCIES
+  eventmachine
+  faye-websocket
+  mock_redis
+  redis
+  rspec
+
+BUNDLED WITH
+   2.2.0

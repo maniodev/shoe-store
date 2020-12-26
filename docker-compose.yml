@@ -1,5 +1,20 @@
 version: '3.7'
 services:
+  redis:
+    image: "redis:alpine"
+    hostname: redis
+    command: redis-server
+    ports:
+      - "6379:6379"
+  events_consumer:
+    build: ./events_consumer
+    command: bash -c "ruby server.rb"
+    depends_on:
+      - "redis"
+      - "server"
+    environment:
+      WEBSOCKET_URL: ws://server:8080/
+      REDIS_URL: redis://redis:6379/0
   server:
     build: ./server
     command: bash -c "bin/websocketd --port=8080 ruby inventory.rb"
