@@ -1,0 +1,7 @@
+version: '3.7'
+services:
+  server:
+    build: ./server
+    command: bash -c "bin/websocketd --port=8080 ruby inventory.rb"
+    ports:
+      - 8080:8080
