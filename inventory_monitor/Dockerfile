@@ -12,6 +12,7 @@ COPY Gemfile.lock /code/Gemfile.lock
 COPY package*.json /code/
 
 RUN bundle install -j 20
+RUN yarn install
 
 COPY . /code/
 

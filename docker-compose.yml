@@ -43,6 +43,7 @@ services:
     volumes:
       - ./inventory_monitor:/code:cached
       - ./inventory_monitor/:/tmp
+      - /code/node_modules
     ports:
       - '3000:3000'
     env_file:
