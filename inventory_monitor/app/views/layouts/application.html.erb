@@ -8,9 +8,45 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= action_cable_meta_tag %>
   </head>
 
   <body>
     <%= yield %>
+    <script type="text/javascript">
+      $(document).ready( function () {
+        var table = $('#myTable').DataTable( {
+          ajax: '/api/v1/inventories',
+          "sDom": "tp",
+          lengthChange:false,
+          pageLength: 40,
+          columns: [
+            { data: 'attributes.model' },
+            { data: 'attributes.store' },
+            { data: 'attributes.quantity' }
+          ]
+        });
+
+        setInterval( function () {
+            table.ajax.reload();
+        }, 5000);
+
+        $('#shoe').change(function (event) {
+          var store = $("#store").val();
+          var shoe_model = event.target.value;
+          var data = { store, shoe_model };
+          table.column(0).search(shoe_model).draw();
+          $.post("/admin/dashboard/refresh", { store, shoe_model });
+        });
+
+        $('#store').change(function (event) {
+          var shoe_model = $("#shoe").val();
+          var store = event.target.value;
+          var data = { store, shoe_model };
+          table.column(1).search(store).draw();
+          $.post("/admin/dashboard/refresh", { store, shoe_model });
+        });
+      });
+    </script>
   </body>
 </html>
