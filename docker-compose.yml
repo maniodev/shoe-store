@@ -6,6 +6,20 @@ services:
     command: redis-server
     ports:
       - "6379:6379"
+    volumes:
+      - ./tmp/redis:/data
+
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: inventory
+      POSTGRES_PASSWORD: password
+
   events_consumer:
     build: ./events_consumer
     command: bash -c "ruby server.rb"
@@ -20,3 +34,31 @@ services:
     command: bash -c "bin/websocketd --port=8080 ruby inventory.rb"
     ports:
       - 8080:8080
+  web:
+    depends_on:
+      - 'redis'
+      - 'db'
+    build: ./inventory_monitor
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -e ${RAILS_ENV}"
+    volumes:
+      - ./inventory_monitor:/code:cached
+      - ./inventory_monitor/:/tmp
+    ports:
+      - '3000:3000'
+    env_file:
+      - ./inventory_monitor/.env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_HOST=db
+      - RAILS_ENV=development
+  sidekiq:
+    build: ./inventory_monitor
+    command: sidekiq -C config/sidekiq.yml
+    volumes:
+      - ./inventory_monitor:/code
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    env_file:
+      - ./inventory_monitor/.env
+    depends_on:
+      - "redis"
