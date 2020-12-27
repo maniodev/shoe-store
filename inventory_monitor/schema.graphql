@@ -1,0 +1,57 @@
+"""
+An ISO 8601-encoded datetime
+"""
+scalar ISO8601DateTime
+
+type Inventory {
+  createdAt: ISO8601DateTime!
+  id: ID!
+  quantity: Int
+  shoe: Shoe!
+  shoeId: Int!
+  store: Store!
+  storeId: Int!
+  updatedAt: ISO8601DateTime!
+}
+
+type Mutation {
+  """
+  An example field added by the generator
+  """
+  testField: String!
+}
+
+type Query {
+  """
+  List inventories
+  """
+  inventories: [Inventory!]!
+  shoe(id: ID!): Shoe!
+
+  """
+  List shoes
+  """
+  shoes: [Shoe!]!
+  store(id: ID!): Store!
+
+  """
+  List stores
+  """
+  stores: [Store!]!
+}
+
+type Shoe {
+  createdAt: ISO8601DateTime!
+  id: ID!
+  model: String
+  stores: [Store!]!
+  updatedAt: ISO8601DateTime!
+}
+
+type Store {
+  createdAt: ISO8601DateTime!
+  id: ID!
+  name: String
+  shoes: [Shoe!]!
+  updatedAt: ISO8601DateTime!
+}
