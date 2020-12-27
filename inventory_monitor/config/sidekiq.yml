@@ -1,0 +1,11 @@
+---
+:verbose: true
+:concurrency: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+:timeout: 30
+:queues:
+  - [default, 1]
+  - [chart, 2] # high priority
+:schedule:
+  hello_world:
+    every: "5s"
+    class: InventorySyncWorker
